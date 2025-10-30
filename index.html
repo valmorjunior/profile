@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valmor Valentim - Profile</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(45deg, #1a1a2e, #16213e, #0f3460);
+            color: #a0a0a0;
+            font-family: 'Press Start 2P', 'Orbitron', monospace;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            font-size: 12px;
+            line-height: 1.8;
+        }
+
+        /* Efeito de scanlines do Atari */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(0deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(160, 160, 160, 0.02) 2px,
+                    rgba(160, 160, 160, 0.02) 4px);
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            border: 3px solid #666;
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.7);
+            box-shadow: 0 0 20px rgba(102, 102, 102, 0.2);
+            position: relative;
+            image-rendering: pixelated;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
+        }
+
+        .profile-title {
+            font-size: 2.5rem;
+            font-weight: normal;
+            color: #e0e0e0;
+            text-shadow: 2px 2px 0px #666, 0 0 10px rgba(224, 224, 224, 0.3);
+            margin-bottom: 20px;
+            font-family: 'Press Start 2P', monospace;
+            letter-spacing: 3px;
+        }
+
+        .subtitle {
+            font-size: 0.8rem;
+            color: #999;
+            margin-bottom: 20px;
+            font-family: 'Press Start 2P', monospace;
+            letter-spacing: 1px;
+        }
+
+        .lang-toggle {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(102, 102, 102, 0.2);
+            border: 2px solid #666;
+            color: #a0a0a0;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-family: 'Press Start 2P', monospace;
+            font-size: 0.6rem;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+        }
+
+        .lang-toggle:hover {
+            background: rgba(102, 102, 102, 0.4);
+            color: #e0e0e0;
+        }
+
+        .atari-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .atari-card {
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #666;
+            padding: 25px;
+            position: relative;
+            transition: all 0.3s ease;
+            image-rendering: pixelated;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
+        }
+
+        .atari-card:hover {
+            border-color: #999;
+            box-shadow: 0 0 15px rgba(153, 153, 153, 0.2);
+            transform: translateY(-3px);
+        }
+
+        .atari-card::before {
+            content: '';
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            right: 5px;
+            bottom: 5px;
+            border: 1px solid rgba(102, 102, 102, 0.2);
+            pointer-events: none;
+        }
+
+        .card-title {
+            font-size: 1rem;
+            color: #ccc;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-family: 'Press Start 2P', monospace;
+            text-shadow: 1px 1px 0px #666;
+        }
+
+        .card-content {
+            line-height: 1.8;
+            font-size: 0.7rem;
+            font-family: 'Press Start 2P', monospace;
+        }
+
+        .card-content p {
+            margin-bottom: 15px;
+        }
+
+        .card-content ul {
+            margin-top: 15px;
+        }
+
+        .card-content li {
+            margin-bottom: 8px;
+        }
+
+        .card-content h4 {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 0.7rem;
+            margin-bottom: 8px !important;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .skill-tag {
+            background: rgba(102, 102, 102, 0.3);
+            color: #e0e0e0;
+            padding: 10px 8px;
+            text-align: center;
+            font-weight: normal;
+            font-size: 0.5rem;
+            border: 2px solid #666;
+            transition: all 0.3s ease;
+            font-family: 'Press Start 2P', monospace;
+            letter-spacing: 1px;
+            text-shadow: 1px 1px 0px #333;
+        }
+
+        .skill-tag:hover {
+            background: rgba(153, 153, 153, 0.4);
+            border-color: #999;
+            transform: scale(1.05);
+        }
+
+        .contact-section {
+            text-align: center;
+            margin-top: 40px;
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.9);
+            border: 2px solid #666;
+            position: relative;
+        }
+
+        .whatsapp-btn {
+            display: inline-block;
+            background: rgba(37, 211, 102, 0.8);
+            color: white;
+            padding: 15px 25px;
+            text-decoration: none;
+            font-weight: normal;
+            font-size: 0.7rem;
+            border: 2px solid #666;
+            transition: all 0.3s ease;
+            margin: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-family: 'Press Start 2P', monospace;
+            text-shadow: 1px 1px 0px #333;
+        }
+
+        .whatsapp-btn:hover {
+            background: rgba(37, 211, 102, 1);
+            box-shadow: 0 0 15px rgba(37, 211, 102, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .linkedin-btn {
+            display: inline-block;
+            background: rgba(0, 119, 181, 0.8);
+            color: white;
+            padding: 15px 25px;
+            text-decoration: none;
+            font-weight: normal;
+            font-size: 0.7rem;
+            border: 2px solid #666;
+            transition: all 0.3s ease;
+            margin: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-family: 'Press Start 2P', monospace;
+            text-shadow: 1px 1px 0px #333;
+        }
+
+        .linkedin-btn:hover {
+            background: rgba(0, 119, 181, 1);
+            box-shadow: 0 0 15px rgba(0, 119, 181, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .pixel-border {
+            position: relative;
+        }
+
+        .pixel-border::after {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            background: repeating-linear-gradient(90deg,
+                    #666 0px,
+                    #666 2px,
+                    transparent 2px,
+                    transparent 6px);
+            z-index: -1;
+        }
+
+        @media (max-width: 768px) {
+            .profile-title {
+                font-size: 1.5rem;
+                letter-spacing: 2px;
+            }
+
+            .subtitle {
+                font-size: 0.6rem;
+            }
+
+            .atari-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 10px;
+            }
+
+            .card-title {
+                font-size: 0.8rem;
+            }
+
+            .card-content {
+                font-size: 0.6rem;
+            }
+
+            .skill-tag {
+                font-size: 0.4rem;
+                padding: 8px 6px;
+            }
+
+            .whatsapp-btn,
+            .linkedin-btn {
+                font-size: 0.6rem;
+                padding: 12px 20px;
+            }
+        }
+
+        /* Animação de typing */
+        .typing-animation {
+            overflow: hidden;
+            border-right: 2px solid #999;
+            white-space: nowrap;
+            animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from {
+                width: 0;
+            }
+
+            to {
+                width: 100%;
+            }
+        }
+
+        @keyframes blink-caret {
+
+            from,
+            to {
+                border-color: transparent;
+            }
+
+            50% {
+                border-color: #999;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Efeitos pixelados adicionais */
+        * {
+            image-rendering: pixelated;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
+        }
+
+        .pixel-text {
+            text-rendering: geometricPrecision;
+        }
+
+        /* Efeito de borda pixelada */
+        .atari-card::after {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            right: -1px;
+            bottom: -1px;
+            background:
+                linear-gradient(90deg, #666 50%, transparent 50%),
+                linear-gradient(#666 50%, transparent 50%);
+            background-size: 4px 4px;
+            z-index: -1;
+            opacity: 0.3;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header class="header pixel-border">
+            <button class="lang-toggle" onclick="toggleLanguage()">EN / PT-BR</button>
+            <h1 class="profile-title pixel-text">VALMOR VALENTIM</h1>
+            <p class="subtitle typing-animation pixel-text"
+                data-pt="EMPREENDEDOR & ARQ. DE SOFTWARE | CO-FOUNDER @ TRAKLY HEALTH | DECISÕES RÁPIDAS, CONSTRUÇÃO ÁGIL | ESCALA E PERFORMANCE | FOCO EM RESULTADO E QUALIDADE"
+                data-en="ENTREPRENEUR & SOFTWARE ARCHITECT | CO-FOUNDER @ TRAKLY HEALTH | FAST DECISIONS, AGILE BUILDING | SCALE AND PERFORMANCE | FOCUS ON RESULTS AND QUALITY">
+                EMPREENDEDOR & ARQ. DE SOFTWARE | CO-FOUNDER @ TRAKLY HEALTH | DECISÕES RÁPIDAS, CONSTRUÇÃO ÁGIL |
+                ESCALA E PERFORMANCE | FOCO EM RESULTADO E QUALIDADE</p>
+        </header>
+
+        <div class="atari-grid">
+            <div class="atari-card">
+                <h2 class="card-title" data-pt="🎯 SOBRE MIM" data-en="🎯 ABOUT ME">🎯 SOBRE MIM</h2>
+                <div class="card-content">
+                    <p data-pt="Desenvolvedor full stack e líder técnico com mais de 5 anos de experiência em desenvolvimento de software, automação de processos e gestão de equipes. Especializado em criar soluções inovadoras que combinam desenvolvimento, automação inteligente e estratégias de marketing digital. Experiência sólida em liderança de times, gestão de tráfego pago e implementação de automações complexas com N8N."
+                        data-en="Full stack developer and technical leader with over 5 years of experience in software development, process automation and team management. Specialized in creating innovative solutions that combine development, intelligent automation and digital marketing strategies. Solid experience in team leadership, paid traffic management and implementation of complex automations with N8N.">
+                        Desenvolvedor full stack e líder técnico com mais de 5 anos de experiência em desenvolvimento de
+                        software, automação de processos e gestão de equipes. Especializado em criar soluções inovadoras
+                        que combinam desenvolvimento, automação inteligente e estratégias de marketing digital.
+                        Experiência sólida em liderança de times, gestão de tráfego pago e implementação de automações
+                        complexas com N8N.</p>
+                </div>
+            </div>
+
+            <div class="atari-card">
+                <h2 class="card-title" data-pt="💻 TECNOLOGIAS" data-en="💻 TECHNOLOGIES">💻 TECNOLOGIAS</h2>
+                <div class="card-content">
+                    <div class="skills-grid">
+                        <div class="skill-tag">JavaScript</div>
+                        <div class="skill-tag">TypeScript</div>
+                        <div class="skill-tag">React</div>
+                        <div class="skill-tag">Next.js</div>
+                        <div class="skill-tag">Node.js</div>
+                        <div class="skill-tag">Python</div>
+                        <div class="skill-tag">Django</div>
+                        <div class="skill-tag">PostgreSQL</div>
+                        <div class="skill-tag">MongoDB</div>
+                        <div class="skill-tag">Docker</div>
+                        <div class="skill-tag">AWS</div>
+                        <div class="skill-tag">N8N</div>
+                        <div class="skill-tag">Zapier</div>
+                        <div class="skill-tag">Make.com</div>
+                        <div class="skill-tag">Google Analytics</div>
+                        <div class="skill-tag">Facebook Ads</div>
+                        <div class="skill-tag">Git</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="atari-card">
+                <h2 class="card-title" data-pt="🚀 EXPERIÊNCIA" data-en="🚀 EXPERIENCE">🚀 EXPERIÊNCIA</h2>
+                <div class="card-content">
+                    <p data-pt="Desenvolvedor Full Stack Sênior com foco em:"
+                        data-en="Senior Full Stack Developer focused on:">Desenvolvedor Full Stack Sênior com foco em:
+                    </p>
+                    <ul style="margin-top: 10px; padding-left: 20px;">
+                        <li data-pt="Desenvolvimento de aplicações web escaláveis e performáticas"
+                            data-en="Development of scalable and high-performance web applications">Desenvolvimento de
+                            aplicações web escaláveis e performáticas</li>
+                        <li data-pt="Arquitetura de microsserviços e APIs RESTful"
+                            data-en="Microservices architecture and RESTful APIs">Arquitetura de microsserviços e APIs
+                            RESTful</li>
+                        <li data-pt="Otimização de banco de dados e performance"
+                            data-en="Database optimization and performance tuning">Otimização de banco de dados e
+                            performance</li>
+                        <li data-pt="DevOps, CI/CD e infraestrutura em nuvem"
+                            data-en="DevOps, CI/CD and cloud infrastructure">DevOps, CI/CD e infraestrutura em nuvem
+                        </li>
+                        <li data-pt="Mentoria técnica e liderança de equipes"
+                            data-en="Technical mentoring and team leadership">Mentoria técnica e liderança de equipes
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="atari-card">
+                <h2 class="card-title" data-pt="🎮 PROJETOS DESTACADOS" data-en="🎮 FEATURED PROJECTS">🎮 PROJETOS
+                    DESTACADOS</h2>
+                <div class="card-content">
+                    <div style="margin-bottom: 15px;">
+                        <h4 style="color: #ccc; margin-bottom: 5px;" data-pt="E-commerce Platform"
+                            data-en="E-commerce Platform">E-commerce Platform</h4>
+                        <p style="font-size: 0.9rem;"
+                            data-pt="Plataforma completa de e-commerce com React, Node.js e PostgreSQL. Processamento de pagamentos, gestão de estoque e dashboard administrativo."
+                            data-en="Complete e-commerce platform with React, Node.js and PostgreSQL. Payment processing, inventory management and administrative dashboard.">
+                            Plataforma completa de e-commerce com React, Node.js e PostgreSQL. Processamento de
+                            pagamentos, gestão de estoque e dashboard administrativo.</p>
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <h4 style="color: #ccc; margin-bottom: 5px;" data-pt="Sistema de Gestão Empresarial"
+                            data-en="Business Management System">Sistema de Gestão Empresarial</h4>
+                        <p style="font-size: 0.9rem;"
+                            data-pt="ERP customizado com Django e React. Módulos financeiro, RH, vendas e relatórios avançados com integração de APIs externas."
+                            data-en="Custom ERP with Django and React. Financial, HR, sales modules and advanced reports with external API integration.">
+                            ERP customizado com Django e React. Módulos financeiro, RH, vendas e relatórios avançados
+                            com integração de APIs externas.</p>
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <h4 style="color: #ccc; margin-bottom: 5px;" data-pt="App Mobile de Delivery"
+                            data-en="Mobile Delivery App">App Mobile de Delivery</h4>
+                        <p style="font-size: 0.9rem;"
+                            data-pt="Aplicativo React Native com geolocalização, pagamentos online e sistema de avaliações. Backend em Node.js com WebSockets para tracking em tempo real."
+                            data-en="React Native app with geolocation, online payments and rating system. Node.js backend with WebSockets for real-time tracking.">
+                            Aplicativo React Native com geolocalização, pagamentos online e sistema de avaliações.
+                            Backend em Node.js com WebSockets para tracking em tempo real.</p>
+                    </div>
+                    <div>
+                        <h4 style="color: #ccc; margin-bottom: 5px;" data-pt="Plataforma de Automação Empresarial"
+                            data-en="Business Automation Platform">Plataforma de Automação Empresarial</h4>
+                        <p style="font-size: 0.9rem;"
+                            data-pt="Sistema completo de automação com N8N integrando CRM, e-mail marketing, WhatsApp Business e relatórios. Reduziu 80% do trabalho manual da equipe de vendas."
+                            data-en="Complete automation system with N8N integrating CRM, email marketing, WhatsApp Business and reports. Reduced 80% of manual work for the sales team.">
+                            Sistema completo de automação com N8N integrando CRM, e-mail marketing, WhatsApp Business e
+                            relatórios. Reduziu 80% do trabalho manual da equipe de vendas.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="atari-card">
+                <h2 class="card-title" data-pt="🎓 FORMAÇÃO & CERTIFICAÇÕES" data-en="🎓 EDUCATION & CERTIFICATIONS">🎓
+                    FORMAÇÃO & CERTIFICAÇÕES</h2>
+                <div class="card-content">
+                    <ul style="padding-left: 20px;">
+                        <li data-pt="Bacharelado em Ciência da Computação"
+                            data-en="Bachelor's Degree in Computer Science">Bacharelado em Ciência da Computação</li>
+                        <li data-pt="AWS Certified Solutions Architect" data-en="AWS Certified Solutions Architect">AWS
+                            Certified Solutions Architect</li>
+                        <li data-pt="Certificação Scrum Master (PSM I)" data-en="Scrum Master Certification (PSM I)">
+                            Certificação Scrum Master (PSM I)</li>
+                        <li data-pt="Google Cloud Professional Developer" data-en="Google Cloud Professional Developer">
+                            Google Cloud Professional Developer</li>
+                        <li data-pt="Especialização em Arquitetura de Software"
+                            data-en="Software Architecture Specialization">Especialização em Arquitetura de Software
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="atari-card">
+                <h2 class="card-title" data-pt="🤖 AUTOMAÇÕES & INTEGRAÇÕES" data-en="🤖 AUTOMATION & INTEGRATIONS">🤖
+                    AUTOMAÇÕES & INTEGRAÇÕES</h2>
+                <div class="card-content">
+                    <p data-pt="Especialista em automação de processos e integração de sistemas:"
+                        data-en="Specialist in process automation and system integration:">Especialista em automação de
+                        processos e integração de sistemas:</p>
+                    <ul style="margin-top: 10px; padding-left: 20px;">
+                        <li data-pt="Desenvolvimento de workflows complexos com N8N"
+                            data-en="Development of complex workflows with N8N">Desenvolvimento de workflows complexos
+                            com N8N</li>
+                        <li data-pt="Integração de APIs e webhooks para automação"
+                            data-en="API and webhook integration for automation">Integração de APIs e webhooks para
+                            automação</li>
+                        <li data-pt="Automação de marketing e vendas com Zapier/Make.com"
+                            data-en="Marketing and sales automation with Zapier/Make.com">Automação de marketing e
+                            vendas com Zapier/Make.com</li>
+                        <li data-pt="Criação de chatbots e assistentes virtuais"
+                            data-en="Creation of chatbots and virtual assistants">Criação de chatbots e assistentes
+                            virtuais</li>
+                        <li data-pt="Automação de relatórios e dashboards" data-en="Report and dashboard automation">
+                            Automação de relatórios e dashboards</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="atari-card">
+                <h2 class="card-title" data-pt="📊 GESTÃO DE TRÁFEGO & MARKETING"
+                    data-en="📊 TRAFFIC MANAGEMENT & MARKETING">📊 GESTÃO DE TRÁFEGO & MARKETING</h2>
+                <div class="card-content">
+                    <p data-pt="Experiência sólida em marketing digital e gestão de tráfego:"
+                        data-en="Solid experience in digital marketing and traffic management:">Experiência sólida em
+                        marketing digital e gestão de tráfego:</p>
+                    <ul style="margin-top: 10px; padding-left: 20px;">
+                        <li data-pt="Campanhas Facebook Ads e Google Ads otimizadas"
+                            data-en="Optimized Facebook Ads and Google Ads campaigns">Campanhas Facebook Ads e Google
+                            Ads otimizadas</li>
+                        <li data-pt="Análise de métricas e KPIs com Google Analytics"
+                            data-en="Metrics and KPIs analysis with Google Analytics">Análise de métricas e KPIs com
+                            Google Analytics</li>
+                        <li data-pt="Funis de conversão e automação de marketing"
+                            data-en="Conversion funnels and marketing automation">Funis de conversão e automação de
+                            marketing</li>
+                        <li data-pt="SEO técnico e otimização de performance"
+                            data-en="Technical SEO and performance optimization">SEO técnico e otimização de performance
+                        </li>
+                        <li data-pt="Pixel tracking e remarketing estratégico"
+                            data-en="Pixel tracking and strategic remarketing">Pixel tracking e remarketing estratégico
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="atari-card">
+                <h2 class="card-title" data-pt="👥 LIDERANÇA & GESTÃO DE TIMES"
+                    data-en="👥 LEADERSHIP & TEAM MANAGEMENT">👥 LIDERANÇA & GESTÃO DE TIMES</h2>
+                <div class="card-content">
+                    <p data-pt="Líder técnico experiente com foco em desenvolvimento de equipes:"
+                        data-en="Experienced technical leader focused on team development:">Líder técnico experiente com
+                        foco em desenvolvimento de equipes:</p>
+                    <ul style="margin-top: 10px; padding-left: 20px;">
+                        <li data-pt="Liderança de equipes de desenvolvimento" data-en="Leadership of development teams">
+                            Liderança de equipes de
+                            desenvolvimento</li>
+                        <li data-pt="Implementação de metodologias ágeis (Scrum/Kanban)"
+                            data-en="Implementation of agile methodologies (Scrum/Kanban)">Implementação de metodologias
+                            ágeis (Scrum/Kanban)</li>
+                        <li data-pt="Mentoria técnica e desenvolvimento de carreira"
+                            data-en="Technical mentoring and career development">Mentoria técnica e desenvolvimento de
+                            carreira</li>
+                        <li data-pt="Gestão de projetos complexos e prazos críticos"
+                            data-en="Complex project management and critical deadlines">Gestão de projetos complexos e
+                            prazos críticos</li>
+                        <li data-pt="Code review e padronização de processos"
+                            data-en="Code review and process standardization">Code review e padronização de processos
+                        </li>
+                        <li data-pt="Recrutamento e onboarding de desenvolvedores"
+                            data-en="Developer recruitment and onboarding">Recrutamento e onboarding de desenvolvedores
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="atari-card">
+                <h2 class="card-title" data-pt="🌟 SOFT SKILLS" data-en="🌟 SOFT SKILLS">🌟 SOFT SKILLS</h2>
+                <div class="card-content">
+                    <div class="skills-grid">
+                        <div class="skill-tag" data-pt="Liderança" data-en="Leadership">Liderança</div>
+                        <div class="skill-tag" data-pt="Comunicação" data-en="Communication">Comunicação</div>
+                        <div class="skill-tag" data-pt="Resolução de Problemas" data-en="Problem Solving">Resolução de
+                            Problemas</div>
+                        <div class="skill-tag" data-pt="Trabalho em Equipe" data-en="Teamwork">Trabalho em Equipe</div>
+                        <div class="skill-tag" data-pt="Adaptabilidade" data-en="Adaptability">Adaptabilidade</div>
+                        <div class="skill-tag" data-pt="Mentoria" data-en="Mentoring">Mentoria</div>
+                        <div class="skill-tag" data-pt="Gestão de Projetos" data-en="Project Management">Gestão de
+                            Projetos</div>
+                        <div class="skill-tag" data-pt="Pensamento Estratégico" data-en="Strategic Thinking">Pensamento
+                            Estratégico</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="contact-section">
+            <h2 style="color: #ccc; margin-bottom: 20px; font-size: 2rem;" data-pt="VAMOS CONVERSAR?"
+                data-en="LET'S TALK?">VAMOS CONVERSAR?</h2>
+            <p style="margin-bottom: 30px; font-size: 1.1rem;"
+                data-pt="Entre em contato comigo através dos canais abaixo:"
+                data-en="Get in touch with me through the channels below:">Entre em contato comigo através dos canais
+                abaixo:</p>
+
+            <a href="https://wa.me/5582987124616" class="whatsapp-btn" target="_blank">
+                📱 WHATSAPP
+            </a>
+
+            <a href="https://www.linkedin.com/in/valmor-valentim/" class="linkedin-btn" target="_blank">
+                💼 LINKEDIN
+            </a>
+
+            <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #666;">
+                <p style="font-size: 0.9rem; color: #999;"
+                    data-pt="Disponível para projetos freelance e oportunidades full-time"
+                    data-en="Available for freelance projects and full-time opportunities">Disponível para projetos
+                    freelance e oportunidades full-time</p>
+                <p style="font-size: 0.8rem; color: #777; margin-top: 10px;"
+                    data-pt="📍 Maceió, Alagoas - Brasil | 🌐 Trabalho Remoto"
+                    data-en="📍 Maceió, Alagoas - Brazil | 🌐 Remote Work">📍 Maceió, Alagoas - Brasil | 🌐 Trabalho
+                    Remoto</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sistema de tradução
+        let currentLang = 'pt';
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'pt' ? 'en' : 'pt';
+
+            const elements = document.querySelectorAll('[data-pt][data-en]');
+            elements.forEach(element => {
+                const text = currentLang === 'pt' ? element.getAttribute('data-pt') : element.getAttribute('data-en');
+                element.textContent = text;
+            });
+
+            // Atualizar botão de idioma
+            const langBtn = document.querySelector('.lang-toggle');
+            langBtn.textContent = currentLang === 'pt' ? 'EN / PT-BR' : 'PT-BR / EN';
+
+            // Salvar preferência
+            localStorage.setItem('preferredLang', currentLang);
+        }
+
+        // Carregar idioma salvo
+        function loadSavedLanguage() {
+            const savedLang = localStorage.getItem('preferredLang');
+            if (savedLang && savedLang !== currentLang) {
+                toggleLanguage();
+            }
+        }
+
+        // Efeito de glitch ocasional (mais suave)
+        function glitchEffect() {
+            const title = document.querySelector('.profile-title');
+            const originalText = title.textContent;
+
+            // Caracteres para o efeito glitch
+            const glitchChars = '▓▒░█▄▀';
+
+            let glitchText = '';
+            for (let i = 0; i < originalText.length; i++) {
+                if (Math.random() < 0.05) {
+                    glitchText += glitchChars[Math.floor(Math.random() * glitchChars.length)];
+                } else {
+                    glitchText += originalText[i];
+                }
+            }
+
+            title.textContent = glitchText;
+
+            setTimeout(() => {
+                title.textContent = originalText;
+            }, 80);
+        }
+
+        // Aplicar efeito glitch ocasionalmente
+        setInterval(glitchEffect, 12000);
+
+        // Efeito de hover nos cards (mais suave)
+        document.querySelectorAll('.atari-card').forEach(card => {
+            card.addEventListener('mouseenter', function () {
+                this.style.background = 'rgba(102, 102, 102, 0.1)';
+            });
+
+            card.addEventListener('mouseleave', function () {
+                this.style.background = 'rgba(0, 0, 0, 0.8)';
+            });
+        });
+
+        // Animação de entrada dos cards
+        function animateCards() {
+            const cards = document.querySelectorAll('.atari-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+
+                setTimeout(() => {
+                    card.style.transition = 'all 0.6s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 150);
+            });
+        }
+
+        // Executar quando a página carregar
+        window.addEventListener('load', () => {
+            loadSavedLanguage();
+            animateCards();
+        });
+
+        // Console easter egg
+        console.log(`
+        ╔══════════════════════════════════════╗
+        ║          ATARI PROFILE v2.0          ║
+        ║                                      ║
+        ║    Desenvolvido por Valmor Valentim  ║
+        ║                                      ║
+        ║    🎮 Ready Player One? 🎮           ║
+        ║                                      ║
+        ║    Pressione F12 para mais easter    ║
+        ║    eggs e comandos secretos!         ║
+        ╚══════════════════════════════════════╝
+        `);
+
+        // Easter eggs no console
+        window.konami = function () {
+            document.body.style.filter = 'hue-rotate(180deg)';
+            setTimeout(() => {
+                document.body.style.filter = 'none';
+            }, 3000);
+            console.log('🎮 KONAMI CODE ACTIVATED! 🎮');
+        };
+
+        window.matrix = function () {
+            const chars = '01';
+            const drops = [];
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+
+            canvas.style.position = 'fixed';
+            canvas.style.top = '0';
+            canvas.style.left = '0';
+            canvas.style.zIndex = '9999';
+            canvas.style.pointerEvents = 'none';
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            document.body.appendChild(canvas);
+
+            for (let x = 0; x < canvas.width / 10; x++) {
+                drops[x] = 1;
+            }
+
+            function draw() {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                ctx.fillStyle = '#0F0';
+                ctx.font = '10px monospace';
+
+                for (let i = 0; i < drops.length; i++) {
+                    const text = chars[Math.floor(Math.random() * chars.length)];
+                    ctx.fillText(text, i * 10, drops[i] * 10);
+
+                    if (drops[i] * 10 > canvas.height && Math.random() > 0.975) {
+                        drops[i] = 0;
+                    }
+                    drops[i]++;
+                }
+            }
+
+            const interval = setInterval(draw, 33);
+
+            setTimeout(() => {
+                clearInterval(interval);
+                document.body.removeChild(canvas);
+            }, 5000);
+
+            console.log('🔋 MATRIX MODE ACTIVATED! 🔋');
+        };
+
+        console.log('💡 Comandos disponíveis:');
+        console.log('- konami() - Ativa efeito especial');
+        console.log('- matrix() - Modo Matrix por 5 segundos');
+        console.log('- toggleLanguage() - Alterna idioma');
+    </script>
+</body>
+
+</html>
